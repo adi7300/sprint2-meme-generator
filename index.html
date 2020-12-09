@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Document</title>
+</head>
+
+<body onload="onInit()">
+    <header>
+        <div class="header-container flex space-between">
+            <div class="logo">Gememator</div>
+            <ul class="main-nav flex">
+                <li class="flex" onclick="onGalleryClick()">Gallery</li>
+                <li class="flex" onclick="onDisplayEditor()">Editor</li>
+                <!-- <li class="flex"></li> -->
+                <li class="flex" onclick="onAboutClick()">About</li>
+            </ul>
+
+            <!-- <button class="menu-btn" onclick="toggleMenu()">☰</button> -->
+        </div>
+    </header>
+    <main>
+        <div class="grid-gallery"></div>
+        <div class="grid-editor hidden flex">
+            <div class="canvas-container">
+                <canvas id="my-canvas" width="600px" height="700px" class="editor-buttons">
+                </canvas>
+            </div>
+            <div class="control-box flex">
+                <input type="text" class="meme-text" onkeypress="onTextEnter(this,event)">
+                <div class="editor-buttons flex">
+                    <button class="icon-btn re-order-btn" onclick="onReorderclick()"><img
+                            src="imgs/buttons/swap.svg"></button>
+                    <button class="icon-btn add-row-btn" onclick="onAddRowclick()"><img
+                            src="imgs/buttons/plus.svg"></button>
+                    <button class="icon-btn delete-row-btn" onclick="onDeleteRowclick()"><img
+                            src="imgs/buttons/trash.svg"></button>
+                </div>
+                <div class="editor-style">
+                    <button class="icon-btn a-plus">A+</button>
+                    <button class="icon-btn a-minus">A-</button>
+                    <button class="icon-btn"><img src="imgs/buttons/align-left.svg"></button>
+                    <button class="icon-btn"><img src="imgs/buttons/align-center.svg"></button>
+                    <button class="icon-btn"><img src="imgs/buttons/align-right.svg"></button>
+                    <select class="txt-impact">
+                        <option>Title</option>
+                        <option>subtitle</option>
+                        <option>marked</option>
+                    </select>
+                    <button class="icon-btn"><img src="imgs/buttons/underl.svg"></button>
+                    <input type="color" class="icon-btn">
+                </div>
+
+                <div class="social-div flex">
+                    <button class="social-btn share">Share</button>
+                    <button class="social-btn download">Download</button>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script src="js/storage-service.js"></script>
+    <script src="js/generator-service.js"></script>
+    <script src="js/generator-controller.js"></script>
+</body>
+
+</html>
