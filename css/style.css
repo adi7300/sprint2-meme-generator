@@ -66,7 +66,6 @@ header{
     cursor: pointer;
 }
 
-
 .main-nav>li:hover{
     color: black;
     box-shadow: inset -2px -5px 0  rgb(28, 105, 157);
@@ -116,7 +115,7 @@ canvas{
 
 .meme-text{
     height: 50px;
-    width: 25em;
+    width: 40vw;
     border-radius: 30px;
     padding: 20px;
     font-size: large;
@@ -140,12 +139,14 @@ canvas{
     box-shadow: -1px 2px rgb(28, 105, 157);
     border-radius: 10px;
     padding: 13px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 .txt-impact{
     height: 60px;
     padding: 10px;
     width:190px;
+    font-size: 28px;
     grid-column: 1/4;
     grid-row: 2/3;
     margin: 20px;
@@ -168,6 +169,7 @@ canvas{
 
 .a-plus, .a-minus{
     font-size: 30px;
+
 }
 
 .social-div{

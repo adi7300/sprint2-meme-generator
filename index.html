@@ -37,22 +37,25 @@
                             src="imgs/buttons/swap.svg"></button>
                     <button class="icon-btn add-row-btn" onclick="onAddRowclick()"><img
                             src="imgs/buttons/plus.svg"></button>
-                    <button class="icon-btn delete-row-btn" onclick="onDeleteRowclick()"><img
+                    <button class="icon-btn delete-row-btn" onclick="onDeleteRowClick()"><img
                             src="imgs/buttons/trash.svg"></button>
                 </div>
                 <div class="editor-style">
-                    <button class="icon-btn a-plus">A+</button>
-                    <button class="icon-btn a-minus">A-</button>
-                    <button class="icon-btn"><img src="imgs/buttons/align-left.svg"></button>
-                    <button class="icon-btn"><img src="imgs/buttons/align-center.svg"></button>
-                    <button class="icon-btn"><img src="imgs/buttons/align-right.svg"></button>
-                    <select class="txt-impact">
-                        <option>Title</option>
-                        <option>subtitle</option>
-                        <option>marked</option>
+                    <button class="icon-btn a-plus" onclick="changeAtt('+')">A+</button>
+                    <button class="icon-btn a-minus" onclick="changeAtt('-')">A-</button>
+                    <button class="icon-btn align-l" onclick="changeAtt('underline','left')"><img
+                            src="imgs/buttons/align-left.svg"></button>
+                    <button class="icon-btn align-c" onclick="changeAtt('underline','center')"><img
+                            src="imgs/buttons/align-center.svg"></button>
+                    <button class="icon-btn align-r" onclick="changeAtt('underline','right')"><img
+                            src="imgs/buttons/align-right.svg"></button>
+                    <select class="txt-impact" onchange="changeAtt('font',this)">
+                        <option>Impact</option>
+                        <option>Cambria</option>
+                        <option>Cochin</option>
                     </select>
-                    <button class="icon-btn"><img src="imgs/buttons/underl.svg"></button>
-                    <input type="color" class="icon-btn">
+                    <button class="icon-btn" onclick="changeAtt('u')"><img src="imgs/buttons/underl.svg"></button>
+                    <input type="color" class="icon-btn" onchange="changeAtt('color',this)">
                 </div>
                 <form class="social-div flex" action="" method="POST" enctype="multipart/form-data"
                     onsubmit="uploadImg(this, event)">
