@@ -13,10 +13,9 @@
         <div class="header-container flex space-between">
             <div><img onclick="onInit()" class=" logo" src="imgs/logo/logo.png"></div>
             <ul class="main-nav flex">
-                <li class="flex" onclick="onGalleryClick()">Gallery</li>
-                <li class="flex editor-btn" onclick="onDisplayEditor()">Editor</li>
-                <!-- <li class="flex"></li> -->
-                <li class="flex" onclick="onAboutClick()">About</li>
+                <li class="flex nav-btn" onclick="onGalleryClick()">Gallery</li>
+                <li class="flex nav-btn editor-btn" onclick="onDisplayEditor()">Editor</li>
+                <!-- <li class="flex nav-btn" onclick="onAboutClick()">About</li> -->
             </ul>
 
             <!-- <button class="menu-btn" onclick="toggleMenu()">☰</button> -->
@@ -27,7 +26,7 @@
         <div class="grid-editor hidden flex">
             <div class="canvas-container">
                 <canvas id="my-canvas" width="600px" height="700px" class="editor-buttons"
-                    onmousedown="onCanvasClicked(event)">
+                    onmouseup="onCanvasClicked(event)" onmousedown="onMouseDown(event)">
                 </canvas>
             </div>
             <div class="control-box flex">
