@@ -6,24 +6,57 @@ var gCurrCordonations; //x,y, width, height;
 const gInitialText = "Your text here";
 
 function onInit() {
-    gCurrCordonations = { x: 100, y: 10, widthX: 400, heightY: 70 };
     gCanvas = document.getElementById('my-canvas')
     gCtx = gCanvas.getContext('2d');
-
-    buildGallery();
+    gCurrCordonations = { x: 100, y: 10, widthX: 400, heightY: 70 };
+    if (window.innerWidth < 580) {
+        gCanvas.width = window.innerWidth * 0.9;
+        gCanvas.height = 600;
+    }
+    buildGallery(getImages());
+    renderKeywords();
     resetData();
     onGalleryClick();
 }
-function buildGallery() {
+
+function toggleMenu() {
+    document.querySelector("body").classList.toggle("open-menu");
+}
+
+function buildGallery(images) {
     var strHTML = '';
-    for (var i = 0; i < 18; i++) {
-        strHTML += `<div class="gallery_item "><img class="gallery_img" src="imgs/${i + 1}.jpg" onclick="onImgClick('${i + 1}')"></div>`;
-    }
+    images.forEach(image => {
+        strHTML += `<div class="gallery_item "><img class="gallery_img" src=${image.url} 
+        onclick="onImgClick('${image.id}')"></div>`;
+    });
     document.querySelector(".grid-gallery").innerHTML = strHTML;
+}
+
+function renderKeywords() {
+    var elKeywordsDiv = document.querySelector(".keywords-bar");
+    var strHtml = '';
+    var keywordsMap = getKeywordsMap();
+    var size = '';
+    for (var keyword in keywordsMap) {
+        if (keywordsMap[keyword] > 2) {
+            size = 'small-txt';
+            if (keywordsMap[keyword] > 10) size = 'large-txt';
+            else if (keywordsMap[keyword] > 6) size = 'medium-txt';
+            strHtml += `<p value=${keyword} class="keyword ${size}" onclick="filterByKeyword('${keyword}')">${keyword}</p>`
+        }
+    };
+    elKeywordsDiv.innerHTML = strHtml;
+}
+
+function filterByKeyword(filterWord) {
+    console.log('filterWord is:', filterWord);
+    buildGallery(getImages(filterWord));
+    renderCanvas();
 }
 
 function onGalleryClick() {
     document.querySelector(".grid-gallery").classList.remove('hidden');
+    document.querySelector(".search-bar").classList.remove('hidden');
     document.querySelector(".grid-editor").classList.add('hidden');
 
 }
@@ -32,12 +65,11 @@ function onDisplayEditor() {
     var imgId = getMemeSelectedImg();
     if (imgId !== -1) {
         document.querySelector(".grid-gallery").classList.add('hidden');
+        document.querySelector(".search-bar").classList.add('hidden');
         document.querySelector(".grid-editor").classList.remove('hidden');
         document.querySelector(".editor-btn").style.color = 'black';
-
         cleanTextLine();
     }
-    else alert('Please select an image first ');
 }
 
 function cleanTextLine() {
@@ -53,7 +85,7 @@ function onAddRowclick() {
     renderCanvas();
     cleanTextLine();
     document.querySelector(".meme-text").focus();
-    document.querySelector(".txt-impact").value = "Impact";
+    document.querySelector(".txt-impact").value = 'Impact';
 
 }
 
@@ -67,33 +99,35 @@ function onDeleteRowClick() {
 
 function setBorderCoordinations() {
     var line = getCurrLine(getSelectedLine());
-    if (!line) {
+    if (!line || !line.txt) {
         gCurrCordonations.x = 100;
         gCurrCordonations.widthX = gCtx.measureText(gInitialText).width + 50;
         gCurrCordonations.y = 10;
+        gCurrCordonations.heightY = 70;
     }
+
     else {
         gCurrCordonations.x = line.x - (gCtx.measureText(line.txt).width) / 2 - 15;
         gCurrCordonations.widthX = gCtx.measureText(line.txt).width + 30;
-        gCurrCordonations.y = line.y - 58;
+        gCurrCordonations.y = line.y - line.size;
+        gCurrCordonations.heightY = line.size + 5;
     }
-    gCurrCordonations.heightY = 70;
 }
 
 function renderCanvas() {
     placeImg(getSelectedImgId());
     var memeText = getMemeTextData();
     var line = memeText[gLinesCounter];
-    if (!line || line.txt === "") {
+    if (!line || !line.txt) {
         if (line) {
             drawText(gInitialText, line.x, line.y);
         }
-        else drawText(gInitialText, 300, 70);
+        else drawText(gInitialText, gCanvas.width / 2, 70);
     }
     drawTextBorder();
     if (memeText.length) {
         memeText.forEach((line, indx) => {
-            drawText(line.txt, line.x, line.y, indx);
+            setTimeout(() => { drawText(line.txt, line.x, line.y, indx) }, 0)
         });
     }
 }
@@ -118,8 +152,7 @@ function onCanvasClicked(click) {
 
 function changeAtt(att, val = 0) {
     var currTextVals = getCurrLine(getSelectedLine());
-    if (att === '+')
-        currTextVals.size += 2;
+    if (att === '+') currTextVals.size += 2;
     else if (att === '-') currTextVals.size -= 2;
     else if (att === 'color') currTextVals.color = val.value;
     else if (att === 'font') currTextVals.font = val.value;
@@ -152,24 +185,24 @@ function onImgClick(imgId) {
     onDisplayEditor();
 }
 
-function resizeCanvas() {
-    var elContainer = document.querySelector('.canvas-container');
-    gCanvas.width = elContainer.offsetWidth;
-    gCanvas.height = elContainer.offsetHeight;
-    // canvas.width = window.innerWidth;
-}
 
-function onTextEnter(data, val) {
-    var text = data.value + val.key;
+function onTextEnter(data) {
+    var text = data.value;
     setMemeTextData(text, gCanvas);
     setBorderCoordinations();
     renderCanvas();
 }
 
 function placeImg(imgId) {
+    console.log('imdIg is:', imgId);
     var img = new Image();
+
     img.src = getImgbyId(imgId).url;
-    gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height)
+    gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height);
+    // img.onload = () => {
+    //     gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height);
+    //     // drawText
+    // }
 }
 
 function clearCanvas() {
@@ -179,7 +212,6 @@ function clearCanvas() {
 function onReorderclick() {
     var text = changeLineFocus();
     document.querySelector(".meme-text").value = text;
-
     setBorderCoordinations();
     renderCanvas();
 }

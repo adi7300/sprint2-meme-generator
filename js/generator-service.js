@@ -1,25 +1,53 @@
 'use strict'
 
-var gImgs = []; //{id:id,url:url,keywords:[]}
+var gImgs = [];
+var gKeywordsMap = {};
 var gLinesCounter = 0;
-// var gTextStyle = { size: 60, color: 'white', align: 'center' };
 var gMeme = {
-    selectedImgId: -1,
+    selectedImgId: 1,
     selectedLineIdx: 0,
-    lines: []   //txt: '', size: 0, align: '', color: '', x: '', y: '' 
+    lines: []
 }
 
-onInit();
+init();
 
+function countKeywords() {
+    gImgs.forEach(img =>
+        img.keywords.forEach(keyword => {
+            var count = gKeywordsMap[keyword];
+            gKeywordsMap[keyword] = count ? count + 1 : 1;
+        })
+    );
+}
 
-function onInit() {
+function init() {
     createImgs();
+    countKeywords();
+}
+
+function getImages(filterby = 'all') {
+    if (filterby === 'all') return gImgs;
+    var resultImg = [];
+    for (var i = 0; i < gImgs.length; i++) {
+        if (gImgs[i].keywords.join().includes(filterby)) {
+            resultImg.push(gImgs[i]);
+        }
+    }
+    // resultImg = gImgs.filter(imgRow => {
+    //     imgRow.keywords.includes(filterby);
+    // });
+    console.log('filteredImgs is:', resultImg);
+    return resultImg;
+}
+
+function getKeywordsMap() {
+    return gKeywordsMap;
 }
 
 function resetData() {
     gLinesCounter = 0;
     gMeme = {
-        selectedImgId: -1,
+        selectedImgId: 1,
         selectedLineIdx: 0,
         lines: []
     };
@@ -62,8 +90,8 @@ function getSelectedLine() {
     return gMeme.selectedLineIdx;
 }
 
-function getCurrLine(i) {
-    return gMeme.lines[i];
+function getCurrLine(idx) {
+    return gMeme.lines[idx];
 }
 
 function checkPosition(x, y) {
@@ -81,7 +109,6 @@ function checkPosition(x, y) {
     return gMeme.selectedLineIdx;
 }
 
-
 function drawUnderline(x, y, xEnd = 250, yEnd = 250) {
     gCtx.beginPath()
     gCtx.moveTo(x, y)
@@ -89,8 +116,8 @@ function drawUnderline(x, y, xEnd = 250, yEnd = 250) {
     gCtx.closePath()
     gCtx.strokeStyle = '#ff0000'
     gCtx.stroke()
-
 }
+
 function setTextAlignment(ctx, canvas) {
     if (gMeme.lines[gMeme.selectedLineIdx]) {
         if (gMeme.lines[gMeme.selectedLineIdx].align === 'right') {
@@ -102,20 +129,16 @@ function setTextAlignment(ctx, canvas) {
         else if (gMeme.lines[gMeme.selectedLineIdx].align === 'center') {
             gMeme.lines[gMeme.selectedLineIdx].x = canvas.width / 2;
         }
-
     }
 }
 
 function setMemeTextData(text, canvas) {
     var y = 70;
     var x = canvas.width / 2;
-    var canHeight = canvas.height;
-    if (gMeme.selectedLineIdx === 0) y = canHeight / 10;
-    else if (gMeme.selectedLineIdx === 1) y = canHeight - canHeight / 10;
-    else if (gMeme.selectedLineIdx > 1) y = canHeight / 2;
-
-
-
+    var canvasHeight = canvas.height;
+    if (!gMeme.selectedLineIdx) y = canvasHeight / 10;
+    else if (gMeme.selectedLineIdx === 1) y = canvasHeight - canvasHeight / 10;
+    else if (gMeme.selectedLineIdx > 1) y = canvasHeight / 2;
     gMeme.lines[gMeme.selectedLineIdx] = createLine(text, x, y);
 }
 
@@ -149,17 +172,32 @@ function getImgbyId(id) {
 }
 
 function createImgs() {
-    for (var i = 0; i < 18; i++) {
-        gImgs.push(createImg(gImgs.length));
-    }
+    gImgs.push(createImg(1, 'imgs/1.jpg', ['USA', 'politics', 'man']));
+    gImgs.push(createImg(2, 'imgs/2.jpg', ['dog', 'animals', 'sweet']));
+    gImgs.push(createImg(3, 'imgs/3.jpg', ['baby', 'animals', 'dog', 'sweet']));
+    gImgs.push(createImg(4, 'imgs/4.jpg', ['cat', 'animals', 'computer']));
+    gImgs.push(createImg(5, 'imgs/5.jpg', ['baby', 'angry']));
+    gImgs.push(createImg(6, 'imgs/6.jpg', ['movie', 'skeptical', 'man']));
+    gImgs.push(createImg(7, 'imgs/7.jpg', ['baby', 'surprise']));
+    gImgs.push(createImg(8, 'imgs/8.jpg', ['movie', 'skeptical', 'funny', 'man']));
+    gImgs.push(createImg(9, 'imgs/9.jpg', ['baby', 'funny']));
+    gImgs.push(createImg(10, 'imgs/10.jpg', ['man', 'funny', 'USA', 'politics']));
+    gImgs.push(createImg(11, 'imgs/11.jpg', ['fight', 'man']));
+    gImgs.push(createImg(12, 'imgs/12.jpg', ['man']));
+    gImgs.push(createImg(13, 'imgs/13.jpg', ['success', 'movie', 'man']));
+    gImgs.push(createImg(14, 'imgs/14.jpg', ['movie', 'man']));
+    gImgs.push(createImg(15, 'imgs/15.jpg', ['movie', 'man']));
+    gImgs.push(createImg(16, 'imgs/16.jpg', ['movie', 'funny', 'man']));
+    gImgs.push(createImg(17, 'imgs/17.jpg', ['russia', 'politics', 'man']));
+    gImgs.push(createImg(18, 'imgs/18.jpg', ['afraid', 'movie', 'man']));
 }
 
 
-function createImg(len) {
+function createImg(id, url, keywords) {
     return {
-        id: len + 1,
-        url: `imgs/${len + 1}.jpg`,
-        keywords: [],
+        id: id,
+        url: url,
+        keywords: keywords,
     }
 }
 

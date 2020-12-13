@@ -4,11 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/style.css">
     <title>Document</title>
 </head>
 
 <body onload="onInit()">
+    <div class="main-screen" onclick="toggleMenu()"></div>
     <header>
         <div class="header-container flex space-between">
             <div><img onclick="onInit()" class=" logo" src="imgs/logo/logo.png"></div>
@@ -17,11 +19,17 @@
                 <li class="flex nav-btn editor-btn" onclick="onDisplayEditor()">Editor</li>
                 <!-- <li class="flex nav-btn" onclick="onAboutClick()">About</li> -->
             </ul>
-
-            <!-- <button class="menu-btn" onclick="toggleMenu()">☰</button> -->
+            <a href="javascript:void(0);" class="bar-icon" onclick="toggleMenu()">
+                <i class="fa fa-bars"></i>
+            </a>
         </div>
     </header>
+    <section class="search-bar flex">
+        <input type="text" placeholder="Type keyword" class="search-txt" oninput="filterByKeyword(this.value)">
+        <div class="keywords-bar"></div>
+    </section>
     <main>
+        <div class="gallery-container"></div>
         <div class="grid-gallery"></div>
         <div class="grid-editor hidden flex">
             <div class="canvas-container">
@@ -30,7 +38,7 @@
                 </canvas>
             </div>
             <div class="control-box flex">
-                <input type="text" class="meme-text" onclick="drawTextBorder()" onkeypress="onTextEnter(this,event)">
+                <input type="text" class="meme-text" onclick="drawTextBorder()" oninput="onTextEnter(this,event)">
                 <div class="editor-buttons flex">
                     <button class="icon-btn re-order-btn" onclick="onReorderclick()"><img
                             src="imgs/buttons/swap.svg"></button>
@@ -65,11 +73,8 @@
                     <div class="share-container"></div>
                 </form>
             </div>
-
         </div>
-
     </main>
-
 
     <script src="js/storage-service.js"></script>
     <script src="js/generator-service.js"></script>
