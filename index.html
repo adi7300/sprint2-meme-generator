@@ -13,24 +13,23 @@
     <div class="main-screen" onclick="toggleMenu()"></div>
     <header>
         <div class="header-container flex space-between">
-            <div><img onclick="onInit()" class=" logo" src="imgs/logo/logo.png"></div>
-            <ul class="main-nav flex">
+            <div><img onclick="onInit()" class="border-right logo" src="imgs/logo/logo.png"></div>
+            <ul class="main-nav flex border-left">
                 <li class="flex nav-btn" onclick="onGalleryClick()">Gallery</li>
                 <li class="flex nav-btn editor-btn" onclick="onDisplayEditor()">Editor</li>
-                <!-- <li class="flex nav-btn" onclick="onAboutClick()">About</li> -->
             </ul>
             <a href="javascript:void(0);" class="bar-icon" onclick="toggleMenu()">
                 <i class="fa fa-bars"></i>
             </a>
         </div>
     </header>
-    <section class="search-bar flex">
+    <section class="border-right border-left search-bar flex">
         <input type="text" placeholder="Type keyword" class="search-txt" oninput="filterByKeyword(this.value)">
         <div class="keywords-bar"></div>
     </section>
     <main>
         <div class="gallery-container"></div>
-        <div class="grid-gallery"></div>
+        <div class="grid-gallery border-right border-left"></div>
         <div class="grid-editor hidden flex">
             <div class="canvas-container">
                 <canvas id="my-canvas" width="600px" height="700px" class="editor-buttons"
