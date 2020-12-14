@@ -3,6 +3,7 @@
 var gCanvas;
 var gCtx;
 var gCurrCordonations; //x,y, width, height;
+var gMousePress = false;
 const gInitialText = "Your text here";
 
 function onInit() {
@@ -23,6 +24,8 @@ function toggleMenu() {
     document.querySelector("body").classList.toggle("open-menu");
 }
 
+
+
 function buildGallery(images) {
     var strHTML = '';
     images.forEach(image => {
@@ -34,7 +37,7 @@ function buildGallery(images) {
 
 function renderKeywords() {
     var elKeywordsDiv = document.querySelector(".keywords-bar");
-    var strHtml = '';
+    var strHtml = `<p value=${keyword} class="keyword large-txt" onclick="filterByKeyword('all')">All</p>`;
     var keywordsMap = getKeywordsMap();
     var size = '';
     for (var keyword in keywordsMap) {
@@ -140,6 +143,18 @@ function drawTextBorder() {
     gCtx.stroke();
 }
 
+function onMouseDown() {
+    var selectedLine = checkPosition(click.offsetX, click.offsetY);
+    if (selectedLine !== -1) gMousePress = true;
+}
+
+function dragText(ev) {
+    setXYPosition(ev.offsetX, ev.offsetY);
+    if (gMousePress) {
+        renderCanvas();
+    }
+}
+
 function onCanvasClicked(click) {
     var selectedLine = checkPosition(click.offsetX, click.offsetY);
     if (selectedLine !== -1) {
@@ -147,6 +162,7 @@ function onCanvasClicked(click) {
         document.querySelector(".meme-text").value = clickedLineText;
         setBorderCoordinations();
         renderCanvas();
+        gMousePress = false;
     }
 }
 

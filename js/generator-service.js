@@ -118,6 +118,11 @@ function drawUnderline(x, y, xEnd = 250, yEnd = 250) {
     gCtx.stroke()
 }
 
+function setXYPosition(x, y) {
+    gMeme.lines[gMeme.selectedLineIdx].x = x;
+    gMeme.lines[gMeme.selectedLineIdx].y = y;
+}
+
 function setTextAlignment(ctx, canvas) {
     if (gMeme.lines[gMeme.selectedLineIdx]) {
         if (gMeme.lines[gMeme.selectedLineIdx].align === 'right') {
